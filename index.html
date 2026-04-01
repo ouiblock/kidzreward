@@ -919,11 +919,11 @@ function showT(msg){
 
 function dismissSplash(){
   const s=document.getElementById('splashScreen');
-  if(s){s.style.transition='opacity .6s';s.style.opacity='0';setTimeout(()=>s.remove(),600);}
+  if(!s)return;
+  s.style.transition='opacity .5s';
+  s.style.opacity='0';
+  setTimeout(()=>{ s.style.display='none'; s.remove(); },520);
 }
-// Auto-dismiss after 3s on return visits
-if(localStorage.getItem('ironchat_seen')){setTimeout(dismissSplash,2500);}
-else{localStorage.setItem('ironchat_seen','1');}
 
 init();
 
