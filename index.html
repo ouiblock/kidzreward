@@ -190,7 +190,7 @@ ul{list-style:none}
 .game-tap-hint{font-size:12px;color:var(--faint);font-weight:700;text-align:center;margin-top:8px}
 
 /* ===== SPLASH LANDING ===== */
-#splashScreen{position:fixed;inset:0;z-index:9999;background:#0A0A1A;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;overflow:hidden}
+#splashScreen{position:fixed;inset:0;z-index:9999;background:#0A0A1A;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
 .splash-img{width:100%;max-width:480px;object-fit:cover;flex:1;min-height:0}
 .splash-bottom{width:100%;max-width:480px;padding:20px 24px 32px;background:linear-gradient(to bottom,rgba(10,10,26,0) 0%,#0A0A1A 30%);margin-top:-60px;position:relative;z-index:2;text-align:center}
 .splash-btn{background:linear-gradient(135deg,#FFB800,#FF6B35);color:#fff;border:none;border-radius:999px;padding:16px 48px;font-family:'Fredoka One',cursive;font-size:22px;cursor:pointer;box-shadow:0 0 32px rgba(255,184,0,0.6),0 8px 24px rgba(0,0,0,0.4);animation:pulse-btn 2s ease-in-out infinite;width:100%}
@@ -201,10 +201,10 @@ ul{list-style:none}
 </head>
 <body>
 
-<div id="splashScreen">
-  <img src="landing.jpg" class="splash-img" alt="Bixente & Iron Chat">
+<div id="splashScreen" onclick="dismissSplash()" style="cursor:pointer">
+  <img src="landing.jpg" class="splash-img" alt="Bixente & Iron Chat" draggable="false">
   <div class="splash-bottom">
-    <button class="splash-btn" onclick="dismissSplash()">⭐ Découvrir mes Récompenses</button>
+    <div class="splash-btn">⭐ Découvrir mes Récompenses</div>
     <div class="splash-subtitle">Bixente Rewards &amp; Iron Chat</div>
   </div>
 </div>
@@ -919,11 +919,15 @@ function showT(msg){
 
 function dismissSplash(){
   const s=document.getElementById('splashScreen');
-  if(!s)return;
-  s.style.transition='opacity .5s';
+  if(!s||s._closing)return;
+  s._closing=true;
+  s.style.pointerEvents='none';
+  s.style.transition='opacity .4s';
   s.style.opacity='0';
-  setTimeout(()=>{ s.style.display='none'; s.remove(); },520);
+  setTimeout(()=>{ if(s.parentNode)s.parentNode.removeChild(s); },450);
 }
+// Also dismiss on any keypress
+document.addEventListener('keydown', function kd(){ dismissSplash(); document.removeEventListener('keydown',kd); });
 
 init();
 
