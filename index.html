@@ -2,6 +2,9 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <!-- PWA -->
   
   <script>
@@ -1354,13 +1357,11 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 </script>
 
-  <!-- Service Worker registration -->
+  <!-- Service Worker: unregister all to avoid cache issues -->
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(r => console.log('SW registered'))
-          .catch(e => console.log('SW error', e));
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        regs.forEach(r => r.unregister());
       });
     }
   </script>
