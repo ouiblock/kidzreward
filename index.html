@@ -917,6 +917,14 @@ function showT(msg){
   document.getElementById(id).addEventListener("click",function(e){if(e.target===this)closeM(id);});
 });
 
+function dismissSplash(){
+  const s=document.getElementById('splashScreen');
+  if(s){s.style.transition='opacity .6s';s.style.opacity='0';setTimeout(()=>s.remove(),600);}
+}
+// Auto-dismiss after 3s on return visits
+if(localStorage.getItem('ironchat_seen')){setTimeout(dismissSplash,2500);}
+else{localStorage.setItem('ironchat_seen','1');}
+
 init();
 
 
